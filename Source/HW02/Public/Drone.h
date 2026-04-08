@@ -56,24 +56,25 @@ protected:
 private:
 	EDroneState State;
 	
-	float InterpSpeed_XY = 2.f;
+	float InterpSpeed_XY = 0.4f;
 	float InterpSpeed_Z = 2.f;
 	
 	float AltitudeInput = 0.f;
+	FVector2D MoveInput;
 	
 	// MaxSpeed
-	float CurrentMaxSpeed = 20000.0f;
-	float GroundMaxSpeed = 20000.f;
-	float AirMaxSpeed = 10000.f;
+	float CurrentMaxSpeed = 16000.0f;
+	float GroundMaxSpeed = 16000.f;
+	float AirMaxSpeed = 8000.f;
 	
 	// Acc
-	float CurrentAcceleration = 10000.f;
-	float GroundAcceleration = 10000.f;
-	float AirAcceleration = 5000.f;
+	float CurrentAcceleration = 5000.f;
+	float GroundAcceleration = 5000.f;
+	float AirAcceleration = 2500.f;
 	
 	// Physics
 	float FrictionValue = 0.98f;
-	float GravityScale = -1500.f; //-980.0f;
+	float GravityScale = -980.f; //-980.0f;
 	
 	FVector CurrentVelocity = FVector::ZeroVector;
 	

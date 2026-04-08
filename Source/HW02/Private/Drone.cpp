@@ -43,8 +43,16 @@ void ADrone::PhysicsMove(const float& DeltaTime)
 		}
 	}
 
-	CurrentVelocity.X = FMath::FInterpTo(CurrentVelocity.X, 0.f, DeltaTime, InterpSpeed_XY);
-	CurrentVelocity.Y = FMath::FInterpTo(CurrentVelocity.Y, 0.f, DeltaTime, InterpSpeed_XY);
+	if (!MoveInput.IsNearlyZero())
+	{
+		CurrentVelocity.X = FMath::FInterpTo(CurrentVelocity.X, 0.f, DeltaTime, InterpSpeed_XY);
+		CurrentVelocity.Y = FMath::FInterpTo(CurrentVelocity.Y, 0.f, DeltaTime, InterpSpeed_XY);
+	}
+	else
+	{
+		CurrentVelocity.X = FMath::FInterpTo(CurrentVelocity.X, 0.f, DeltaTime, InterpSpeed_XY * 5);
+		CurrentVelocity.Y = FMath::FInterpTo(CurrentVelocity.Y, 0.f, DeltaTime, InterpSpeed_XY * 5);
+	}
 	
 	if (CurrentVelocity.Z > 0)
 	{
@@ -53,9 +61,12 @@ void ADrone::PhysicsMove(const float& DeltaTime)
 	
 	CurrentVelocity = CurrentVelocity.GetClampedToMaxSize(CurrentMaxSpeed);
 
+	UE_LOG(LogTemp, Warning, TEXT("Current Velocity: %f"), CurrentVelocity.Size());
+	
 	AddActorWorldOffset(CurrentVelocity * DeltaTime, true);
 	
 	AltitudeInput = 0.f;
+	MoveInput = FVector2D::ZeroVector;
 }
 
 void ADrone::CheckGroundedByRay(const float& DeltaTime)
@@ -117,6 +128,7 @@ void ADrone::MoveControl(const FInputActionValue& Value)
 {
 	FVector2D Input = Value.Get<FVector2D>();
 
+	MoveInput = Input;
 	FVector Forward = GetActorForwardVector();
 	FVector Right = GetActorRightVector();
 
